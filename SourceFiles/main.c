@@ -6,11 +6,9 @@
 #include "HeaderFiles/dwenguinoLCD.h"
 #include "avr/interrupt.h"
 
-#define TEST 10
 #define LAAG 0
 #define SERVO_1 1
 #define SERVO_2 2
-#define TEST 20
 
 volatile int toestand = SERVO_1;
 volatile int threshold_servo_1 = 0;
@@ -96,32 +94,24 @@ Vanaf hier instellingen voor Timer-interrupts
   PINC &= ~_BV(PC1);
 
   int teller = 0;
+  int vierkant[44][2] = {{92,85},{91,86},{90,87},{89,88},{88,89},{87,90},{87,91},{86,92},{85,94},{84,95},{83,96},{83,96},{83,97},{83,97},{84,98},{84,99},{84,99},{84,100},{84,101},{84,102},{84,103},{84,104},{84,104},{85,103},{86,101},{87,100},{88,99},{89,98},{90,97},{91,96},{91,95},{92,94},{93,93},{93,93},{93,92},{93,91},{93,91},{93,90},{93,89},{93,88},{93,87},{92,87},{92,86},{92,85}};
 
   while(1){
 
-    switch (teller%3) {
-      case 0:
-        teller++;
-        threshold_servo_1 = 92;
-        threshold_servo_2 = 30;
-        _delay_ms(500);
-        break;
+    for (teller = 0; teller < 3; i++) {
 
-      case 1:
-        teller++;
-        threshold_servo_1 = 30;
-        threshold_servo_2 = 90;
-        _delay_ms(500);
-        break;
+      int c_nummer = 0; 
+      for (c_nummer; c_nummer < 44; c_nummer++) {
 
-      case 2:
-        teller++;
-        threshold_servo_1 = 60;
-        threshold_servo_2 = 50;
-        _delay_ms(500);
-        break;
+        threshold_servo_1 = vierkant[c_nummer][0];
+        threshold_servo_2 = vierkant[c_nummer][1];
+
+        _delay_ms(100)
 
       }
+
+
+    }
 
   }
 
