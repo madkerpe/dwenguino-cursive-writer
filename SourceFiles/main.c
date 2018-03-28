@@ -98,7 +98,7 @@ Vanaf hier instellingen voor Timer-interrupts
 
   while(1){
 
-    for (teller = 0; teller < 3; i++) {
+    for (teller = 0; teller < 3; teller++) {
 
       int c_nummer = 0; 
       for (c_nummer; c_nummer < 44; c_nummer++) {
@@ -106,7 +106,7 @@ Vanaf hier instellingen voor Timer-interrupts
         threshold_servo_1 = vierkant[c_nummer][0];
         threshold_servo_2 = vierkant[c_nummer][1];
 
-        _delay_ms(100)
+        _delay_ms(100);
 
       }
 

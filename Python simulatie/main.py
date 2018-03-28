@@ -71,9 +71,14 @@ if __name__ == "__main__":
 
         for t in range(11):
             t = t/10
+            print(t)
+
             coordinaten_lijst.append((bp.calculate_x(t), bp.calculate_y(t)))
 
+    print(coordinaten_lijst)
+
     for coordinaat in coordinaten_lijst:
+        print(position_to_treshold(coordinaat[0], coordinaat[1]))
         treshold_lijst.append(position_to_treshold(coordinaat[0], coordinaat[1]))
 
 
