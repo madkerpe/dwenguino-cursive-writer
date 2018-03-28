@@ -10,6 +10,7 @@
 #define LAAG 0
 #define SERVO_1 1
 #define SERVO_2 2
+#define TEST 20
 
 volatile int toestand = SERVO_1;
 volatile int threshold_servo_1 = 0;
