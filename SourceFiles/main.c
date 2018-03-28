@@ -6,6 +6,7 @@
 #include "HeaderFiles/dwenguinoLCD.h"
 #include "avr/interrupt.h"
 
+#define TEST 10
 #define LAAG 0
 #define SERVO_1 1
 #define SERVO_2 2
