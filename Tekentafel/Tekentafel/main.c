@@ -2,22 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "constants.h"
 #include "figure.h"
 
-#define LAAG 0
-#define SERVO_1 1
-#define SERVO_2 2
-
-#define LL 700 //μs
-#define RL 2300 //μs
-#define FK 16000 //ticks per μs
-#define PS 256 //dimentieloos
-#define ARMLENGTE_1 14 //cm
-#define ARMLENGTE_2 14 //cm
-
-#define BP_SAMPLE_SIZE 10
-
-#define PI 3.14159265359
 
 volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
@@ -25,43 +12,24 @@ volatile unsigned int threshold_servo_2 = 0;
 volatile float global_rico = 0;
 volatile float global_offset = 0;
 
-void setup();
-float radians_to_degrees(float rad);
-float* inverse_kinematics(float x, float y);
-int determine_threshold(float angle);
-
 void setup() {
-	global_rico = FK * (RL - LL) / (PS * 180); 
+	//correct
+	global_rico = FK * (RL - LL) / (PS * 180);
 	global_offset = FK * LL / PS;
 }
 
-float radians_to_degrees(float rad) {
-	return rad * 180 / PI;
-}
-
-float* inverse_kinematics(float x, float y) {
-	float distance = sqrt(x*x + y * y);
-	
-	float temp1 = (ARMLENGTE_1 * ARMLENGTE_1 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * distance);
-	float hoek1 = radians_to_degrees(acos(temp1) + atan(y / x));
-	printf("hoek 1 = %f", hoek1);
-
-	float temp2 = (ARMLENGTE_1 * ARMLENGTE_1 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * ARMLENGTE_2);
-	float hoek2 = radians_to_degrees(acos(temp2));
-
-	float angle_pair[2] = { hoek1, hoek2 };
-	return angle_pair;
-}
-
-
 int determine_threshold(float angle) {
-	return (int)(angle*global_rico + global_offset);
+	//moeilijk om dit fout te hebben...
+	double temp = angle * global_rico + global_offset;
+	return (int)temp;
 }
 
 int main(void) {
 
 	setup();
+	printf("global_rico = %f & global_offset = %f\n", global_rico, global_offset);
 
+	/*
 	BP *bp0 = create_BP(14, 10, 16, 10, 18, 10);
 	BP* bp1 = create_BP(18, 10, 18, 12, 18, 14);
 	BP* bp2 = create_BP(18, 14, 16, 14, 14, 14);
@@ -77,8 +45,9 @@ int main(void) {
 	figure* citroen = create_figure(2, bp_list_citroen);
 
 	figure* current_figure = vierkant;
+	*/
 
-	printf("global_rico = %f & global_offset = %f", global_rico, global_offset);
+	
 
 	/*
 	unsigned int i = 0;
