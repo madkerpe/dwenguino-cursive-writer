@@ -21,3 +21,7 @@ float my_atan(float x) {
 	//correct
 	return (180.0 / PI)*atan(x);
 }
+
+float norm(float x, float y) {
+	return (float)sqrt(x*x + y * y);
+}

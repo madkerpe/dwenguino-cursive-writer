@@ -10,6 +10,7 @@
 volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
 volatile unsigned int threshold_servo_2 = 0;
+volatile unsigned int threshold_laag = 0;
 volatile float global_rico = 0;
 volatile float global_offset = 0;
 
@@ -17,6 +18,9 @@ void setup() {
 	//correct
 	global_rico = FK * (RL - LL) / (PS * 180);
 	global_offset = FK * LL / PS;
+	threshold_laag = ((FK / PS) * LAAG_LENGTE);
+
+	printf("global_rico = %f & global_offset = %f & laag = %d\n\n", global_rico, global_offset, threshold_laag);
 }
 
 int determine_threshold(float angle) {
@@ -28,7 +32,7 @@ int determine_threshold(float angle) {
 float* inverse_kinematics(float x, float y) {
 	//correct
 
-	float distance = sqrt(x*x + y * y);
+	float distance = norm(x, y);
 
 	float temp1 = (ARMLENGTE_1 * ARMLENGTE_1 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * distance);
 	float hoek1 = my_acos(temp1) + my_atan(y / x);
@@ -69,7 +73,6 @@ void draw_BP(BP* current_BP) {
 int main(void) {
 
 	setup();
-	printf("global_rico = %f & global_offset = %f\n\n", global_rico, global_offset);
 
 	BP* bp0 = create_BP(0, 14, 7, 14, 14, 0);
 	BP* bp1 = create_BP(14, 0, 3, 3, 0, 14);

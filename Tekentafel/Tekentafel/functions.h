@@ -5,8 +5,7 @@ float my_cos(float x);
 float my_atan(float x);
 float my_acos(float x);
 
-float* inverse_kinematics(float x, float y);
-int determine_threshold(float angle);
+float norm(float x, float y);
 
 #endif // !DEF_FUNCTIONS
 
