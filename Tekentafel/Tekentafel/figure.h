@@ -8,6 +8,7 @@ typedef struct{
 } BP;
 
 BP* create_BP(unsigned int P0x, unsigned int P0y, unsigned int P1x, unsigned int P1y, unsigned int P2x, unsigned int P2y);
+
 float calculate_x(BP* bpp, float t);
 float calculate_y(BP* bpp, float t);
 

@@ -20,7 +20,7 @@ float calculate_x(BP* bpp, float t) {
 }
 
 float calculate_y(BP * bpp, float t) {
-	return bpp->P0[0] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[0] + bpp->P2[0] * t*t;
+	return bpp->P0[1] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[1] + bpp->P2[1] * t*t;
 }
 
 figure* create_figure(unsigned int new_amount_of_bp, BP * new_bp_list) {
