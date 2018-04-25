@@ -31,7 +31,6 @@ void setup() {
 
 void determine_threshold(float angle, unsigned int* threshold) {
 	float temp = angle * global_rico + global_offset;
-	printIntToLCD((int)temp, 1, 5);
 	*threshold = (int)temp;
 }
 
@@ -49,31 +48,28 @@ void inverse_kinematics(float x, float y, float* angle_pair) {
 	angle_pair[1] = hoek2;
 }
 
-// void draw_BP(BP* current_BP) {
-//
-// 	_delay_ms(1000);
-// 	unsigned int sample_index = 0;
-// 	for (sample_index; sample_index < BP_SAMPLE_SIZE + 1; sample_index++) {
-//
-// 		float t;
-// 		if (sample_index == 0) {
-// 			t = 0;
-// 		}
-//
-// 		else {
-// 			t = (float)sample_index / BP_SAMPLE_SIZE;
-// 		}
-//
-// 		float* angle_pair = inverse_kinematics(calculate_x(current_BP, t), calculate_y(current_BP, t));
-// 		float alpha = angle_pair[0];
-// 		float beta = angle_pair[1];
-//
-// 		threshold_servo_1 = determine_threshold(alpha);
-// 		threshold_servo_2 = determine_threshold(beta);
-// 		_delay_ms(1000);
-//
-// 	}
-// }
+void draw_BP(BP* current_BP) {
+
+	unsigned int sample_index = 0;
+	for (sample_index; sample_index < BP_SAMPLE_SIZE + 1; sample_index++) {
+
+		float t;
+		if (sample_index == 0) {
+			t = 0;
+		}
+
+		else {
+			t = (float)sample_index / BP_SAMPLE_SIZE;
+		}
+
+		inverse_kinematics(calculate_x(current_BP, t), calculate_y(current_BP, t), angle_pair);
+
+		determine_threshold(angle_pair[0], &threshold_servo_1);
+		determine_threshold(angle_pair[1], &threshold_servo_2);
+		_delay_ms(100);
+
+	}
+}
 
 int main(void) {
 /**************************************
@@ -147,7 +143,7 @@ Vanaf hier instellingen voor Timer-interrupts
   //Output Compare A Match Interrupt; treshold
   //Hier specifiek 40000,
   //Dan interrupt om de 40/64 seconden
-  OCR1A = 20000;
+  OCR1A = ((FK / PS) * WACHT_LENGTE);
 
   //We zorgen dat we beginnen in LAAGe toestand
   PINC &= ~_BV(PC0);
@@ -157,7 +153,7 @@ Vanaf hier instellingen voor Timer-interrupts
 Vanaf hier gedaan met hardware-setup
 ********************************************/
   setup();
-/*
+
 	//vierkant
 	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
 	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
@@ -165,6 +161,7 @@ Vanaf hier gedaan met hardware-setup
 	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
 	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
 
+/*
 	//cirkel
 	BP* bp4 = create_BP(5, 9, 5, 4, 10, 4);
 	BP* bp5 = create_BP(10, 4, 15, 4, 15, 9);
@@ -175,31 +172,23 @@ Vanaf hier gedaan met hardware-setup
 
 	while (1) {
 
-	// 	unsigned int i = 0;
-	// 	for (i = 0; i < 4; i++) {
-	// 		draw_BP(vierkant_array[i]);
-	// 		_delay_ms(500);
-
-
-
-		inverse_kinematics(0,14, angle_pair);
-
-		// printIntToLCD(determine_threshold(90),1, 5);
-		// printIntToLCD(determine_threshold(90),0,6);
-
-		determine_threshold(angle_pair[0], &threshold_servo_1);
-		determine_threshold(angle_pair[1], &threshold_servo_2);
-		//set_threshold(14, 14);
-		_delay_ms(500);
-
-
-
+		unsigned int i = 0;
+		for (i = 0; i < 4; i++) {
+			draw_BP(vierkant_array[i]);
+		}
 	}
 
-/*
-	free(bp0);
-	free(bp1);
-*/
+	// free(bp0);
+	// free(bp1);
+	// free(bp2);
+	// free(bp3);
+  //
+	// free(bp4);
+	// free(bp5);
+	// free(bp6);
+	// free(bp7);
+
+
 
   return 0;
 }
