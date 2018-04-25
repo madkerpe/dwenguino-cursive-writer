@@ -1,6 +1,7 @@
 #include "functions.h"
 #include "constants.h"
 #include "math.h"
+#include <time.h>
 
 float my_sin(float x) {
 	//correct
@@ -24,4 +25,9 @@ float my_atan(float x) {
 
 float norm(float x, float y) {
 	return (float)sqrt(x*x + y * y);
+}
+
+void delay(unsigned int number_of_miliseconds) {
+	clock_t start_time = clock();
+	while (clock() < start_time + number_of_miliseconds) { ; }
 }

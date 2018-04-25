@@ -53,6 +53,7 @@ float* inverse_kinematics(float x, float y) {
 
 void draw_BP(BP* current_BP) {
 	
+	delay(1000);
 	unsigned int sample_index = 0;
 	for (sample_index; sample_index < BP_SAMPLE_SIZE + 1; sample_index++) {
 		
@@ -72,57 +73,48 @@ void draw_BP(BP* current_BP) {
 		threshold_servo_1 = determine_threshold(alpha);
 		threshold_servo_2 = determine_threshold(beta);
 		printf("#%2d:	pos:(%2.2f,%2.2f) -> angle:(%.2f,%.2f) -> thres:(%d,%d)\n", sample_index, calculate_x(current_BP, t), calculate_y(current_BP, t), alpha, beta, threshold_servo_1, threshold_servo_2);
+		delay(1000);
+	
 	}
 }
 
 int main(void) {
 
 	setup();
+	figure* current_figure;
 
-	BP* bp0 = create_BP(0, 14, 7, 14, 14, 0);
-	BP* bp1 = create_BP(14, 0, 3, 3, 0, 14);
-	BP* bp_list[2] = { bp0, bp1};
+	//vierkant
+	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
+	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
+	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
+	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
+	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
+	figure* vierkant = create_figure(4, vierkant_array);
+
+	//cirkel
+	BP* bp0 = create_BP(5, 9, 5, 4, 10, 4);
+	BP* bp1 = create_BP(10, 4, 15, 4, 15, 9);
+	BP* bp2 = create_BP(15, 9, 15, 14, 10, 14);
+	BP* bp3 = create_BP(10, 14, 5, 14, 5, 9);
+	BP* cirkel_array[4] = { bp0, bp1, bp2, bp3 };
+	figure* cirkel = create_figure(4, cirkel_array);
+
+
+	current_figure = vierkant;
+
+	while (1) {
+		
+		unsigned int i = 0;
+		for (i = 0; i < current_figure->amount_of_bp; i++) {
+			draw_BP(&(vierkant->bp_list[i]));
+			delay(500);
+		}
 	
-	draw_BP(bp_list[0]);
-	draw_BP(bp_list[1]);
-
-
-	/*
-	BP *bp0 = create_BP(14, 10, 16, 10, 18, 10);
-	BP* bp1 = create_BP(18, 10, 18, 12, 18, 14);
-	BP* bp2 = create_BP(18, 14, 16, 14, 14, 14);
-	BP* bp3 = create_BP(14, 14, 14, 12, 14, 10);
-
-	BP bp_list_vierkant[4] = { bp0, bp1, bp2, bp3 };
-	figure* vierkant = create_figure(4, bp_list_vierkant);
-
-	BP *bp4 = create_BP(5, 5, 8, 10, 15, 5);
-	BP* bp5 = create_BP(15, 5, 2, 10, 15, 5);
-
-	BP bp_list_citroen[2] = { bp4, bp5 };
-	figure* citroen = create_figure(2, bp_list_citroen);
-
-	figure* current_figure = vierkant;
-	*/
-
-	/*
-	unsigned int i = 0;
-	for (i; i < current_figure->amount_of_bp; i++) {
-		BP current_BP = current_figure->bp_list[i];
 	}
-	*/
-
-	/*
-	printf("\n\n");
-	float* angle_pair = inverse_kinematics(14, 14);
-	float alpha = angle_pair[0];
-	float beta = angle_pair[1];
-
-	printf("\n\nalpha = %f  beta = %f\n", alpha, beta);
-	*/
 
 	free(bp0);
 	free(bp1);
+	delete_figure(vierkant);
 
 	getchar();
 

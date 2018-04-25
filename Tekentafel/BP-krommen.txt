@@ -1,0 +1,32 @@
+
+//vierkant
+BP* bp0 = create_BP(5,4,10,4,15,4);
+BP* bp1 = create_BP(15,4,15,9,15,14);
+BP* bp2 = create_BP(15,14,10,14,5,14);
+BP* bp3 = create_BP(5,14,5,9,5,4);
+BP* vierkant_array[4] = { bp0, bp1, bp2, bp3};
+figure* vierkant = create_figure(4, vierkant_array);
+
+//cirkel
+BP* bp0 = create_BP(5,9,5,4,10,4);
+BP* bp1 = create_BP(10,4,15,4,15,9);
+BP* bp2 = create_BP(15,9,15,14,10,14);
+BP* bp3 = create_BP(10,14,5,14,5,9);
+BP* cirkel_array[4] = { bp0, bp1, bp2, bp3};
+figure* cirkel = create_figure(4, cirkel_array);
+
+//Letter M
+BP* bp0 = create_BP();
+BP* bp1 = create_BP();
+BP* bp2 = create_BP();
+BP* bp3 = create_BP();
+BP* letter_M_array[4] = { bp0, bp1, bp2, bp3};
+figure* letter_M = create_figure(4, letter_M_array);
+
+//template
+BP* bp0 = create_BP();
+BP* bp1 = create_BP();
+BP* bp2 = create_BP();
+BP* bp3 = create_BP();
+BP* template_array[4] = { bp0, bp1, bp2, bp3};
+figure* template = create_figure(4, template_array);
