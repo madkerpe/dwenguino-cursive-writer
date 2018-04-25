@@ -1,4 +1,5 @@
 #ifndef DEF_FUNCTIONS
+#define DEF_FUNCTIONS
 
 float my_sin(float x);
 float my_cos(float x);
