@@ -30,19 +30,19 @@ void setup() {
 }
 
 void determine_threshold(float angle, unsigned int* threshold) {
-	float temp = angle * global_rico + global_offset;
+	float temp = (angle * global_rico)/10 + global_offset;
 	*threshold = (int)temp;
 }
 
 void inverse_kinematics(float x, float y, float* angle_pair) {
 
-	float distance = norm(x, y);
+	int distance = (int)(norm(x, y)*1000);
 
-	float temp1 = (ARMLENGTE_1 * ARMLENGTE_1 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * distance);
-	float hoek1 = my_acos(temp1) + my_atan(y / x);
+	int temp1 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * distance))*10;
+	int hoek1 = my_acos(temp1) + my_atan(y *10000/ x);
 
-	float temp2 = (ARMLENGTE_1 * ARMLENGTE_1 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * ARMLENGTE_2);
-	float hoek2 = my_acos(temp2);
+	int temp2 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * ARMLENGTE_2))/100;
+	int hoek2 = my_acos(temp2);
 
 	angle_pair[0] = hoek1;
 	angle_pair[1] = hoek2;
