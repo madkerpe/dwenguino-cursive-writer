@@ -6,6 +6,11 @@
 #include "functions.h"
 #include "figure.h"
 
+#define _DEBUG
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <crtdbg.h>
+#endif
 
 volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
@@ -66,7 +71,7 @@ void draw_BP(BP* current_BP) {
 
 		threshold_servo_1 = determine_threshold(alpha);
 		threshold_servo_2 = determine_threshold(beta);
-		printf("#%d:	pos:(%.2f,%.2f) -> angle:(%.2f,%.2f) -> thres:(%d,%d)\n", sample_index, calculate_x(current_BP, t), calculate_y(current_BP, t), alpha, beta, threshold_servo_1, threshold_servo_2);
+		printf("#%2d:	pos:(%2.2f,%2.2f) -> angle:(%.2f,%.2f) -> thres:(%d,%d)\n", sample_index, calculate_x(current_BP, t), calculate_y(current_BP, t), alpha, beta, threshold_servo_1, threshold_servo_2);
 	}
 }
 
@@ -116,7 +121,24 @@ int main(void) {
 	printf("\n\nalpha = %f  beta = %f\n", alpha, beta);
 	*/
 
+	free(bp0);
+	free(bp1);
+
 	getchar();
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDOUT);
+	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
+	_CrtDumpMemoryLeaks();
+
+	/* Test for memory leaks */
+
+	getchar();
+
 
 	return 0;
 }
