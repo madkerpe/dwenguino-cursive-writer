@@ -14,8 +14,9 @@
 //Alles in centimeter en seconden, wordt later aangepast...
 
 #define LAAG_LENGTE 0.014 //s
+#define WACHT_LENGTE 2 //s
 
-#define BP_SAMPLE_SIZE 10
+#define BP_SAMPLE_SIZE 20
 
 #define PI 3.14159265359
 

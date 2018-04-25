@@ -4,9 +4,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "constants.h"
-#include "functions.h"
-#include "figure.h"
+#include "HeaderFiles/constants.h"
+#include "HeaderFiles/functions.h"
+#include "HeaderFiles/figure.h"
 
 //We voegen enkele lib's toe om het LCD aan te sturen en om interrupts te gebruiken
 #include "HeaderFiles/dwenguinoBoard.h"
@@ -17,6 +17,8 @@ volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
 volatile unsigned int threshold_servo_2 = 0;
 volatile unsigned int threshold_laag = 0;
+float angle_pair[2];
+
 volatile float global_rico = 0;
 volatile float global_offset = 0;
 
@@ -25,39 +27,32 @@ void setup() {
 	global_rico = FK * (RL - LL) / (PS * 180);
 	global_offset = FK * LL / PS;
 	threshold_laag = ((FK / PS) * LAAG_LENGTE);
-
-	printf("global_rico = %f & global_offset = %f & laag = %d\n\n", global_rico, global_offset, threshold_laag);
 }
 
-int determine_threshold(float angle) {
-	//moeilijk om dit fout te hebben...
-	double temp = angle * global_rico + global_offset;
-	return (int)temp;
+void determine_threshold(float angle, unsigned int* threshold) {
+	float temp = angle * global_rico + global_offset;
+	*threshold = (int)temp;
 }
 
-float* inverse_kinematics(float x, float y) {
-	//correct
+void inverse_kinematics(float x, float y, float* angle_pair) {
 
 	float distance = norm(x, y);
 
 	float temp1 = (ARMLENGTE_1 * ARMLENGTE_1 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * distance);
 	float hoek1 = my_acos(temp1) + my_atan(y / x);
-	//printf("hoek 1 = %f\n", hoek1);
 
 	float temp2 = (ARMLENGTE_1 * ARMLENGTE_1 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * ARMLENGTE_2);
 	float hoek2 = my_acos(temp2);
-	//printf("hoek 2 = %f\n", hoek2);
 
-	float angle_pair[2] = { hoek1, hoek2 };
-	return angle_pair;
+	angle_pair[0] = hoek1;
+	angle_pair[1] = hoek2;
 }
 
 void draw_BP(BP* current_BP) {
-	
-	_delay_ms(1000);
+
 	unsigned int sample_index = 0;
 	for (sample_index; sample_index < BP_SAMPLE_SIZE + 1; sample_index++) {
-		
+
 		float t;
 		if (sample_index == 0) {
 			t = 0;
@@ -67,14 +62,12 @@ void draw_BP(BP* current_BP) {
 			t = (float)sample_index / BP_SAMPLE_SIZE;
 		}
 
-		float* angle_pair = inverse_kinematics(calculate_x(current_BP, t), calculate_y(current_BP, t));
-		float alpha = angle_pair[0];
-		float beta = angle_pair[1];
+		inverse_kinematics(calculate_x(current_BP, t), calculate_y(current_BP, t), angle_pair);
 
-		threshold_servo_1 = determine_threshold(alpha);
-		threshold_servo_2 = determine_threshold(beta);
-		_delay_ms(1000);
-	
+		determine_threshold(angle_pair[0], &threshold_servo_1);
+		determine_threshold(angle_pair[1], &threshold_servo_2);
+		_delay_ms(100);
+
 	}
 }
 
@@ -143,14 +136,14 @@ Vanaf hier instellingen voor Timer-interrupts
   //om de hoeveel klokcycli de timer-register verhoogd moet worden
   //Hier specifiek 256 kolokcycli ---> 16000*4 per seconde
   //Datasheet p.140 - tabel 15.5
-  TCCR1B |= _BV(CS12);
-  TCCR1B &= ~_BV(CS11);
+  TCCR1B &= ~_BV(CS12);
+  TCCR1B |= _BV(CS11);
   TCCR1B &= ~_BV(CS10);
 
   //Output Compare A Match Interrupt; treshold
   //Hier specifiek 40000,
   //Dan interrupt om de 40/64 seconden
-  OCR1A = 20000;
+  OCR1A = ((FK / PS) * WACHT_LENGTE);
 
   //We zorgen dat we beginnen in LAAGe toestand
   PINC &= ~_BV(PC0);
@@ -160,7 +153,6 @@ Vanaf hier instellingen voor Timer-interrupts
 Vanaf hier gedaan met hardware-setup
 ********************************************/
   setup();
-	figure* current_figure;
 
 	//vierkant
 	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
@@ -169,32 +161,41 @@ Vanaf hier gedaan met hardware-setup
 	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
 	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
 
+/*
 	//cirkel
 	BP* bp4 = create_BP(5, 9, 5, 4, 10, 4);
 	BP* bp5 = create_BP(10, 4, 15, 4, 15, 9);
 	BP* bp6 = create_BP(15, 9, 15, 14, 10, 14);
 	BP* bp7 = create_BP(10, 14, 5, 14, 5, 9);
 	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
-
+*/
 
 	while (1) {
-		
+
 		unsigned int i = 0;
 		for (i = 0; i < 4; i++) {
 			draw_BP(vierkant_array[i]);
-			delay_ms_(500);
 		}
-	
 	}
 
-	free(bp0);
-	free(bp1);
+	// free(bp0);
+	// free(bp1);
+	// free(bp2);
+	// free(bp3);
+  //
+	// free(bp4);
+	// free(bp5);
+	// free(bp6);
+	// free(bp7);
+
+
 
   return 0;
 }
 
 
 //Interupt als de zuid-knop wordt ingedrukt
+
 ISR(INT4_vect) {
 
 }
