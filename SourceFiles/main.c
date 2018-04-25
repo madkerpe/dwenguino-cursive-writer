@@ -30,19 +30,20 @@ void setup() {
 }
 
 void determine_threshold(float angle, unsigned int* threshold) {
-	float temp = (angle * global_rico)/10 + global_offset;
+	float temp = angle * global_rico + global_offset;
 	*threshold = (int)temp;
 }
 
 void inverse_kinematics(float x, float y, float* angle_pair) {
 
-	int distance = (int)(norm(x, y)*1000);
+	float distance = (norm(x, y)*1000);
 
-	int temp1 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * distance))*10;
-	int hoek1 = my_acos(temp1) + my_atan(y *10000/ x);
+	float temp1 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * distance))*10;
+	float hoek1 = my_acos(temp1) + my_atan(y *10000/ x);
 
-	int temp2 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * ARMLENGTE_2))/100;
-	int hoek2 = my_acos(temp2);
+	float temp2 = ((ARMLENGTE_1 * ARMLENGTE_1 *1000*1000 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2*1000*1000) / (2 * ARMLENGTE_1 * ARMLENGTE_2))/100;
+	float hoek2 = my_acos(temp2);
+
 
 	angle_pair[0] = hoek1;
 	angle_pair[1] = hoek2;
@@ -155,11 +156,11 @@ Vanaf hier gedaan met hardware-setup
   setup();
 
 	//vierkant
-	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
-	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
-	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
-	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
-	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
+	// BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
+	// BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
+	// BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
+	// BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
+	// BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
 
 /*
 	//cirkel
@@ -172,11 +173,18 @@ Vanaf hier gedaan met hardware-setup
 
 	while (1) {
 
-		unsigned int i = 0;
-		for (i = 0; i < 4; i++) {
-			draw_BP(vierkant_array[i]);
+		// unsigned int i = 0;
+		// for (i = 0; i < 4; i++) {
+		// 	draw_BP(vierkant_array[i]);
+		_delay_ms(500);
+		inverse_kinematics(5, 5, angle_pair);
+		printIntToLCD(angle_pair[1], 0, 5);
+		determine_threshold(angle_pair[0], threshold_servo_1);
+		determine_threshold(angle_pair[1], threshold_servo_2);
 		}
-	}
+
+
+
 
 	// free(bp0);
 	// free(bp1);

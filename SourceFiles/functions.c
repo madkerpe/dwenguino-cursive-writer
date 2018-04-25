@@ -17,21 +17,21 @@ float my_cos(float x) {
 	return cos(x*PI / 180);
 }
 
-int my_acos(int x) {
+float my_acos(int x) {
 	//correct
-	return lookup_cos(x);;
+	return lookup_cos(x)/10;
 }
 
-int my_atan(int x) {
+float my_atan(int x) {
 	//correct
-	return lookup_tan;
+	return lookup_tan(x)/10;
 }
 
 int lookup_cos(int x) {
 	int hoek = 0;
 	for (int i = 0; i < 90; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (tabelcos[i][j] <= waarde) {
+			if (tabelcos[i][j] <= x) {
 				hoek = i * 10 + j;
 				return hoek;
 			}
@@ -43,7 +43,7 @@ int lookup_tan(int x) {
 	int hoek = 0;
 	for (int i = 0; i < 90; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (tabeltan[i][j] >= waarde) {
+			if (tabeltan[i][j] >= x) {
 				hoek = i * 10 + j;
 				return hoek;
 			}
