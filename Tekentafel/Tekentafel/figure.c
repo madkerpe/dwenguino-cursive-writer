@@ -1,4 +1,5 @@
 #include "figure.h"
+#include <stdlib.h>
 
 BP * create_BP(unsigned int P0x, unsigned int P0y, unsigned int P1x, unsigned int P1y, unsigned int P2x, unsigned int P2y) {
 	BP* bp = (BP*)malloc(sizeof(BP));
@@ -28,7 +29,7 @@ figure* create_figure(unsigned int new_amount_of_bp, BP* new_bp_array) {
 	BP* new_bp_list = malloc(new_amount_of_bp * sizeof(BP*));
 	fp->amount_of_bp = new_amount_of_bp;
 
-	unsigned int i;
+	unsigned int i = 0;
 	for (i; i < new_amount_of_bp; i++) {
 		
 		new_bp_list[i] = new_bp_array[i];

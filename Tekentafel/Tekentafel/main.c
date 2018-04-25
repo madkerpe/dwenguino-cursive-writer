@@ -89,24 +89,24 @@ int main(void) {
 	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
 	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
 	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
-	figure* vierkant = create_figure(4, vierkant_array);
+	//figure* vierkant = create_figure(4, vierkant_array);
 
 	//cirkel
-	BP* bp0 = create_BP(5, 9, 5, 4, 10, 4);
-	BP* bp1 = create_BP(10, 4, 15, 4, 15, 9);
-	BP* bp2 = create_BP(15, 9, 15, 14, 10, 14);
-	BP* bp3 = create_BP(10, 14, 5, 14, 5, 9);
-	BP* cirkel_array[4] = { bp0, bp1, bp2, bp3 };
-	figure* cirkel = create_figure(4, cirkel_array);
+	BP* bp4 = create_BP(5, 9, 5, 4, 10, 4);
+	BP* bp5 = create_BP(10, 4, 15, 4, 15, 9);
+	BP* bp6 = create_BP(15, 9, 15, 14, 10, 14);
+	BP* bp7 = create_BP(10, 14, 5, 14, 5, 9);
+	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
+	//figure* cirkel = create_figure(4, cirkel_array);
 
 
-	current_figure = vierkant;
+	//current_figure = vierkant;
 
 	while (1) {
 		
 		unsigned int i = 0;
-		for (i = 0; i < current_figure->amount_of_bp; i++) {
-			draw_BP(&(vierkant->bp_list[i]));
+		for (i = 0; i < 4; i++) {
+			draw_BP(vierkant_array[i]);
 			delay(500);
 		}
 	
@@ -114,7 +114,7 @@ int main(void) {
 
 	free(bp0);
 	free(bp1);
-	delete_figure(vierkant);
+	//delete_figure(vierkant);
 
 	getchar();
 
