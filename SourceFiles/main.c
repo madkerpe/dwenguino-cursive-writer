@@ -1,21 +1,84 @@
+#include <math.h>
+#include <stdlib.h>
+
 #include <avr/io.h>
 #include <util/delay.h>
+
+#include "constants.h"
+#include "functions.h"
+#include "figure.h"
 
 //We voegen enkele lib's toe om het LCD aan te sturen en om interrupts te gebruiken
 #include "HeaderFiles/dwenguinoBoard.h"
 #include "HeaderFiles/dwenguinoLCD.h"
 #include "avr/interrupt.h"
 
-#define LAAG 0
-#define SERVO_1 1
-#define SERVO_2 2
+volatile unsigned int toestand = SERVO_1;
+volatile unsigned int threshold_servo_1 = 0;
+volatile unsigned int threshold_servo_2 = 0;
+volatile unsigned int threshold_laag = 0;
+volatile float global_rico = 0;
+volatile float global_offset = 0;
 
-volatile int toestand = SERVO_1;
-volatile int threshold_servo_1 = 0;
-volatile int threshold_servo_2 = 0;
+void setup() {
+	//correct
+	global_rico = FK * (RL - LL) / (PS * 180);
+	global_offset = FK * LL / PS;
+	threshold_laag = ((FK / PS) * LAAG_LENGTE);
 
-int main(void)
-{
+	printf("global_rico = %f & global_offset = %f & laag = %d\n\n", global_rico, global_offset, threshold_laag);
+}
+
+int determine_threshold(float angle) {
+	//moeilijk om dit fout te hebben...
+	double temp = angle * global_rico + global_offset;
+	return (int)temp;
+}
+
+float* inverse_kinematics(float x, float y) {
+	//correct
+
+	float distance = norm(x, y);
+
+	float temp1 = (ARMLENGTE_1 * ARMLENGTE_1 + distance * distance - ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * distance);
+	float hoek1 = my_acos(temp1) + my_atan(y / x);
+	//printf("hoek 1 = %f\n", hoek1);
+
+	float temp2 = (ARMLENGTE_1 * ARMLENGTE_1 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * ARMLENGTE_2);
+	float hoek2 = my_acos(temp2);
+	//printf("hoek 2 = %f\n", hoek2);
+
+	float angle_pair[2] = { hoek1, hoek2 };
+	return angle_pair;
+}
+
+void draw_BP(BP* current_BP) {
+	
+	_delay_ms(1000);
+	unsigned int sample_index = 0;
+	for (sample_index; sample_index < BP_SAMPLE_SIZE + 1; sample_index++) {
+		
+		float t;
+		if (sample_index == 0) {
+			t = 0;
+		}
+
+		else {
+			t = (float)sample_index / BP_SAMPLE_SIZE;
+		}
+
+		float* angle_pair = inverse_kinematics(calculate_x(current_BP, t), calculate_y(current_BP, t));
+		float alpha = angle_pair[0];
+		float beta = angle_pair[1];
+
+		threshold_servo_1 = determine_threshold(alpha);
+		threshold_servo_2 = determine_threshold(beta);
+		_delay_ms(1000);
+	
+	}
+}
+
+int main(void) {
 /**************************************
 Vanaf hier instellingen voor LCD
 **************************************/
@@ -93,27 +156,39 @@ Vanaf hier instellingen voor Timer-interrupts
   PINC &= ~_BV(PC0);
   PINC &= ~_BV(PC1);
 
-  int teller = 0;
-  int vierkant[44][2] = {{92,85},{91,86},{90,87},{89,88},{88,89},{87,90},{87,91},{86,92},{85,94},{84,95},{83,96},{83,96},{83,97},{83,97},{84,98},{84,99},{84,99},{84,100},{84,101},{84,102},{84,103},{84,104},{84,104},{85,103},{86,101},{87,100},{88,99},{89,98},{90,97},{91,96},{91,95},{92,94},{93,93},{93,93},{93,92},{93,91},{93,91},{93,90},{93,89},{93,88},{93,87},{92,87},{92,86},{92,85}};
+/********************************************
+Vanaf hier gedaan met hardware-setup
+********************************************/
+  setup();
+	figure* current_figure;
 
-  while(1){
+	//vierkant
+	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
+	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
+	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
+	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
+	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
 
-    for (teller = 0; teller < 3; teller++) {
-
-      int c_nummer = 0; 
-      for (c_nummer; c_nummer < 44; c_nummer++) {
-
-        threshold_servo_1 = vierkant[c_nummer][0];
-        threshold_servo_2 = vierkant[c_nummer][1];
-
-        _delay_ms(100);
-
-      }
+	//cirkel
+	BP* bp4 = create_BP(5, 9, 5, 4, 10, 4);
+	BP* bp5 = create_BP(10, 4, 15, 4, 15, 9);
+	BP* bp6 = create_BP(15, 9, 15, 14, 10, 14);
+	BP* bp7 = create_BP(10, 14, 5, 14, 5, 9);
+	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
 
 
-    }
+	while (1) {
+		
+		unsigned int i = 0;
+		for (i = 0; i < 4; i++) {
+			draw_BP(vierkant_array[i]);
+			delay_ms_(500);
+		}
+	
+	}
 
-  }
+	free(bp0);
+	free(bp1);
 
   return 0;
 }
@@ -148,7 +223,7 @@ ISR(TIMER1_COMPA_vect) {
 
     case SERVO_2: //we komen van SERVO_2 en gaan naar LAAG
       toestand = LAAG;
-      OCR1A = 188;
+      OCR1A = threshold_laag;
       PORTC &= ~_BV(PC0); //servo 1 gaat laag (is normaal gezien overbodig)
       PORTC &= ~_BV(PC1); //servo 2 gaat laag
       break;
