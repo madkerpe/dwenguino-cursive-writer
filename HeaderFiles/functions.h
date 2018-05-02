@@ -3,10 +3,8 @@
 
 float my_sin(float x);
 float my_cos(float x);
-int my_atan(int x);
-int my_acos(int x);
-int lookup_cos(int x);
-int lookup_tan(int x);
+float my_atan(float x);
+float my_acos(float x);
 
 float norm(float x, float y);
 
