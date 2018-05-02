@@ -36,7 +36,7 @@ e6 = [(0.375,0),(0.4,0),(0.5,0.25)]
 
 letter_e = [e1, e2, e3, e4, e5, e6]
 
-letter = letter_e
+letter = letter_w
 
 fig = plt.figure()
 codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]

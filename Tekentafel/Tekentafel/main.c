@@ -80,6 +80,7 @@ void draw_BP(BP* current_BP) {
 
 int main(void) {
 
+
 	setup();
 	figure* current_figure;
 
@@ -101,6 +102,18 @@ int main(void) {
 
 
 	//current_figure = vierkant;
+
+	float* angle_pair = inverse_kinematics(14, 14);
+	float alpha = angle_pair[0];
+	float beta = angle_pair[1];
+
+	printf("\n alpha = %f en beta = %f", alpha, beta);
+
+	threshold_servo_1 = determine_threshold(alpha);
+	threshold_servo_2 = determine_threshold(beta);
+
+	printf("\n\ntestwaarde_1 = %d en testwaarde_2 = %d\n\n", determine_threshold(alpha), determine_threshold(beta));
+
 
 	while (1) {
 		

@@ -21,6 +21,7 @@ float angle_pair[2];
 
 volatile float global_rico = 0;
 volatile float global_offset = 0;
+volatile char ingelezen_byte = 0;
 
 void setup() {
 	//correct
@@ -69,6 +70,28 @@ void draw_BP(BP* current_BP) {
 		_delay_ms(100);
 
 	}
+}
+
+void setup_UART() {
+  //setting the BAUD rate
+  UBRRHn = (unsigned char)(BAUD_RATE>>8);
+  UBRRLn = (unsigned char)BAUD_RATE;
+
+  //enable reciever
+  UCSRnB = (1<<RXENn);
+
+  //set frame format: 8 data-bits, 2 stop-bits
+  UCSRnC = (1<<USBSn)|(3<<UCSZn0);
+}
+
+char recieve_UART() {
+  //wait for data to be recieved
+  while(!(UCSRnA & (1<<RXCn))) {
+    ;
+  }
+
+  //Get and return recieved data from buffer
+  return UDRn;
 }
 
 int main(void) {
@@ -150,9 +173,31 @@ Vanaf hier instellingen voor Timer-interrupts
   PINC &= ~_BV(PC1);
 
 /********************************************
+Vanaf hier instellingen voor UART
+********************************************/
+
+  //Asynchronous or Synchronous mode for USART protocol
+  //Synchronous (UMSELn=1) of asynchronous (UMSELn=0)
+  //Datasheet p.178 - 19.2
+  UCSRnC &= ~_BV(UMSELn);
+  
+  //Double or single speed (asynchronous mode only)
+  //Hier hopelijk om single speed?
+  //Datasheet p.178 - 19.2
+  UCSRnA &= ~_BV(U2Xn);
+
+
+
+/********************************************
 Vanaf hier gedaan met hardware-setup
 ********************************************/
+  
+
+//effectieve tekenen staat hier collapsed
+/*
+
   setup();
+
 
 	//vierkant
 	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
@@ -161,34 +206,41 @@ Vanaf hier gedaan met hardware-setup
 	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
 	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
 
-/*
+
 	//cirkel
 	BP* bp4 = create_BP(5, 9, 5, 4, 10, 4);
 	BP* bp5 = create_BP(10, 4, 15, 4, 15, 9);
 	BP* bp6 = create_BP(15, 9, 15, 14, 10, 14);
 	BP* bp7 = create_BP(10, 14, 5, 14, 5, 9);
 	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
-*/
+
+
+
+
+
 
 	while (1) {
-
 		unsigned int i = 0;
 		for (i = 0; i < 4; i++) {
 			draw_BP(vierkant_array[i]);
 		}
 	}
 
-	// free(bp0);
-	// free(bp1);
-	// free(bp2);
-	// free(bp3);
-  //
-	// free(bp4);
-	// free(bp5);
-	// free(bp6);
-	// free(bp7);
+	free(bp0);
+	free(bp1);
+	free(bp2);
+	free(bp3);
 
+	free(bp4);
+	free(bp5);
+	free(bp6);
+	free(bp7);
+*/
 
+setup_UART();
+
+char ingelezen_byte = recieve_UART();
+printCharToLCD((char)ingelezen_byte, 0, 5);
 
   return 0;
 }

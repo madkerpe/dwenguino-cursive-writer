@@ -18,6 +18,8 @@
 
 #define BP_SAMPLE_SIZE 20
 
+#define BAUD_RATE = 9600
+
 #define PI 3.14159265359
 
 #endif
