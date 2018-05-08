@@ -14,6 +14,7 @@ float calculate_y(BP* bpp, float t);
 
 BP* vierkant();
 BP* cirkel();
+BP* raster();
 
 BP* letter_a();
 BP* letter_b();
