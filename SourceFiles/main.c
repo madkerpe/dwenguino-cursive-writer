@@ -200,7 +200,9 @@ int main(void) {
   setup_globals();
   setup_UART();
 
-  char recieved_letter;
+  determine_threshold(90, &threshold_servo_1);
+  determine_threshold(90, &threshold_servo_2);
+
   BP* bp0;
   BP* bp1;
   BP* bp2;
@@ -211,6 +213,7 @@ int main(void) {
   BP* bp7;
   BP* bp8;
 
+  char recieved_letter;
 
   while (1) {
     recieved_letter = recieve_UART();
@@ -277,6 +280,22 @@ int main(void) {
       case 'n':
         printCharToLCD('n', 1, 1);
         break;
+
+      case 'g':
+        printCharToLCD('g', 1, 1);
+        break;
+
+      case 'u':
+        printCharToLCD('u', 1, 1);
+        break;
+
+      case 'i':
+          printCharToLCD('i', 1, 1);
+          break;
+
+      case 'o':
+          printCharToLCD('o', 1, 1);
+          break;
 
       }
 
@@ -355,3 +374,4 @@ ISR(TIMER1_COMPA_vect) {
 
   }
 }
+
