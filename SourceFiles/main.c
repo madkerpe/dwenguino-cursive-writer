@@ -200,17 +200,96 @@ int main(void) {
   setup_globals();
   setup_UART();
 
-  unsigned int current_array_size;
-  BP* current_array;
+  char recieved_letter;
+  BP* bp0;
+  BP* bp1;
+  BP* bp2;
+  BP* bp3;
+  BP* bp4;
+  BP* bp5;
+  BP* bp6;
+  BP* bp7;
+  BP* bp8;
 
 
+  while (1) {
+    recieved_letter = recieve_UART();
+
+    switch (recieved_letter) {
+
+      case 'd':
+        printCharToLCD('d', 1, 1);
+        bp0 = create_BP(0, 0.25, 0, 0.5, 0.2, 0.5);
+      	bp1 = create_BP(0.2, 0.5, 0.4, 0.5, 0.4, 0.25);
+      	bp2 = create_BP(0.4, 0.25, 0.4, 0, 0.2, 0);
+      	bp3 = create_BP(0.2, 0, 0, 0, 0, 0.25);
+      	bp4 = create_BP(0, 0.25, 0, 0, 0.2, 0);
+      	bp5 = create_BP(0.2, 0, 0.4, 0, 0.4, 0.25);
+      	bp6 = create_BP(0.4, 0.25, 0.4, 0.5, 0.4, 1);
+      	bp7 = create_BP(0.4, 1, 0.4, 0.5, 0.4, 0.25);
+      	bp8 = create_BP(0.4, 0.25, 0.4, 0, 0.5, 0.25);
+      	BP* letter_d_array[9] = { bp0, bp1, bp2, bp3, bp4, bp5, bp6, bp7, bp8 };
+        draw_figure(9, letter_d_array);
+        free(bp0);
+        free(bp1);
+        free(bp2);
+        free(bp3);
+        free(bp4);
+        free(bp5);
+        free(bp6);
+        free(bp7);
+        free(bp8);
+        break;
+
+      case 'w':
+        printCharToLCD('w', 1, 1);
+        bp0 = create_BP(0, 0.25, 0.05, 0.75, 0.2, 0);
+      	bp1 = create_BP(0.2, 0, 0.25, 0, 0.25, 0.2);
+      	bp2 = create_BP(0.25, 0.2, 0.25, 0, 0.3, 0);
+      	bp3 = create_BP(0.3, 0, 0.45, 0.75, 0.5, 0.25);
+      	BP* letter_w_array[4] = { bp0, bp1, bp2, bp3 };
+        draw_figure(4, letter_w_array);
+        free(bp0);
+        free(bp1);
+        free(bp2);
+        free(bp3);
+        break;
+
+      case 'e':
+
+        printCharToLCD('e', 1, 1);
+        bp0 = create_BP(0, 0.25, 0.1, 0, 0.125, 0);
+      	bp1 = create_BP(0.125, 0, 0.15, 0, 0.25, 0.1);
+      	bp2 = create_BP(0.25, 0.1, 0.05, 0.375, 0.25, 0.5);
+      	bp3 = create_BP(0.25, 0.5, 0.45, 0.375, 0.25, 0.1);
+      	bp4 = create_BP(0.25, 0.1, 0.35, 0, 0.375, 0);
+      	bp5 = create_BP(0.375, 0, 0.4, 0, 0.5, 0.25);
+      	BP* letter_e_array[6] = { bp0, bp1, bp2, bp3, bp4, bp5 };
+        draw_figure(6, letter_e_array);
+        free(bp0);
+        free(bp1);
+        free(bp2);
+        free(bp3);
+        free(bp4);
+        free(bp5);
+        break;
+
+      case 'n':
+        printCharToLCD('n', 1, 1);
+        break;
+
+      }
+
+    }
+
+/*
 	while (1) {
 
 
-    BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
-  	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
-  	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
-  	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
+    BP* bp0 = create_BP(8, 4, 13, 4, 18, 4);
+  	BP* bp1 = create_BP(18, 4, 18, 9, 18, 14);
+  	BP* bp2 = create_BP(18, 14, 13, 14, 8, 14);
+  	BP* bp3 = create_BP(8, 14, 8, 9, 8, 4);
   	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
     unsigned int vierkant_array_size = 4;
 
@@ -221,16 +300,19 @@ int main(void) {
   	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
     unsigned int cirkel_array_size = 4;
 
-    BP* bp8 = create_BP(4, 12, 10, 12, 16, 12);
+    BP* bp8 = create_BP(10, 5, 10, 10, 10, 15);
 
 
-    current_array = cirkel_array;
-    current_array_size = cirkel_array_size;
-
-    draw_figure(current_array_size, current_array);
+    //current_array = cirkel_array;
+    //current_array_size = cirkel_array_size;
 
 
-	}
+    draw_figure(vierkant_array_size, vierkant_array);
+    //draw_BP(bp8);
+  }
+
+
+*/
 
   return 0;
 }

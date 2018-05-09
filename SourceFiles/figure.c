@@ -1,5 +1,9 @@
 #include "../HeaderFiles/figure.h"
+#include "../HeaderFiles/constants.h"
 #include <stdlib.h>
+
+float x_offset = 10;
+float y_offset = 5;
 
 BP * create_BP(float P0x, float P0y, float P1x, float P1y, float P2x, float P2y) {
 	BP* bp = (BP*)malloc(sizeof(BP));
@@ -17,14 +21,16 @@ BP * create_BP(float P0x, float P0y, float P1x, float P1y, float P2x, float P2y)
 }
 
 float calculate_x(BP* bpp, float t) {
-	return bpp->P0[0] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[0] + bpp->P2[0] * t*t;
+	float temp = bpp->P0[0] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[0] + bpp->P2[0] * t*t;
+	return temp*SCALE + x_offset;
 }
 
 float calculate_y(BP * bpp, float t) {
-	return bpp->P0[1] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[1] + bpp->P2[1] * t*t;
+	float temp = bpp->P0[1] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[1] + bpp->P2[1] * t*t;
+	return temp*SCALE + y_offset;
 }
 
-
+/*
 BP* vierkant() {
 	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
 	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
@@ -132,3 +138,4 @@ BP* letter_e() {
 
 	return letter_e_array;
 }
+*/
