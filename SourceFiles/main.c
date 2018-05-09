@@ -17,6 +17,7 @@ volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
 volatile unsigned int threshold_servo_2 = 0;
 volatile unsigned int threshold_laag = 0;
+
 float angle_pair[2];
 
 volatile float global_rico = 0;
@@ -194,6 +195,7 @@ void transmit_UART(unsigned int data) {
 }
 
 int main(void) {
+
   setup_interrupts();
   setup_timer_interrupts();
   setup_LCD();
@@ -259,7 +261,6 @@ int main(void) {
         break;
 
       case 'e':
-
         printCharToLCD('e', 1, 1);
         bp0 = create_BP(0, 0.25, 0.1, 0, 0.125, 0);
       	bp1 = create_BP(0.125, 0, 0.15, 0, 0.25, 0.1);
@@ -296,8 +297,12 @@ int main(void) {
       case 'o':
           printCharToLCD('o', 1, 1);
           break;
-
       }
+
+      //hacky function to get to a value from another namespace
+      set_x_offset(0.5*SCALE);
+
+
 
     }
 
@@ -374,4 +379,3 @@ ISR(TIMER1_COMPA_vect) {
 
   }
 }
-

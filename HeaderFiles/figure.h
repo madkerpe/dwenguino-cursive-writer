@@ -16,12 +16,6 @@ BP* vierkant();
 BP* cirkel();
 BP* raster();
 
-BP* letter_a();
-BP* letter_b();
-BP* letter_c();
-
-BP* letter_d();
-BP* letter_w();
-BP* letter_e();
+void set_x_offset(float dx);
 
 #endif

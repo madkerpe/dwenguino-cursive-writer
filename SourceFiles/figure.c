@@ -2,8 +2,8 @@
 #include "../HeaderFiles/constants.h"
 #include <stdlib.h>
 
-float x_offset = 10;
-float y_offset = 5;
+volatile float x_offset = START_POSITION_X;
+volatile float y_offset = START_POSITION_Y;
 
 BP * create_BP(float P0x, float P0y, float P1x, float P1y, float P2x, float P2y) {
 	BP* bp = (BP*)malloc(sizeof(BP));
@@ -139,3 +139,7 @@ BP* letter_e() {
 	return letter_e_array;
 }
 */
+
+void set_x_offset(float dx) {
+	x_offset += dx;
+}

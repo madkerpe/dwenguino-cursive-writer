@@ -25,7 +25,10 @@
 #define SERVO_1_OFFSET 5
 #define SERVO_2_OFFSET 5
 
-#define SCALE 4
+#define START_POSITION_X 10
+#define START_POSITION_Y 8
+
+#define SCALE 6
 
 
 #endif
