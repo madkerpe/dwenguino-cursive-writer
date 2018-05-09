@@ -24,6 +24,7 @@ float calculate_y(BP * bpp, float t) {
 	return bpp->P0[1] * (1 - t)*(1 - t) + 2 * (1 - t)* t * bpp->P1[1] + bpp->P2[1] * t*t;
 }
 
+
 BP* vierkant() {
 	BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
 	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
@@ -33,6 +34,7 @@ BP* vierkant() {
 
 	return vierkant_array;
 }
+
 
 BP* cirkel() {
 	BP* bp0 = create_BP(5, 9, 5, 4, 10, 4);

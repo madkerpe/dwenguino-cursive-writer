@@ -125,7 +125,7 @@ void setup_UART() {
 
 void determine_threshold(float angle, unsigned int* threshold) {
 	float temp = angle * global_rico + global_offset;
-	*threshold = (int)temp;
+	*threshold = temp;
 }
 
 void inverse_kinematics(float x, float y, float* angle_pair) {
@@ -138,8 +138,8 @@ void inverse_kinematics(float x, float y, float* angle_pair) {
 	float temp2 = (ARMLENGTE_1 * ARMLENGTE_1 - distance * distance + ARMLENGTE_2 * ARMLENGTE_2) / (2 * ARMLENGTE_1 * ARMLENGTE_2);
 	float hoek2 = my_acos(temp2);
 
-	angle_pair[0] = hoek1;
-	angle_pair[1] = hoek2;
+	angle_pair[0] = hoek1 + SERVO_1_OFFSET;
+	angle_pair[1] = hoek2 + SERVO_2_OFFSET;
 }
 
 void draw_BP(BP* current_BP) {
@@ -163,6 +163,15 @@ void draw_BP(BP* current_BP) {
 		_delay_ms(100);
 
 	}
+}
+
+void draw_figure(unsigned int array_size, BP* array[]) {
+
+  unsigned int i;
+  for (i = 0; i < array_size; i++) {
+    draw_BP(array[i]);
+  }
+
 }
 
 char recieve_UART() {
@@ -191,15 +200,36 @@ int main(void) {
   setup_globals();
   setup_UART();
 
-  BP* vierkant_array = vierkant();
-  BP* cirkel_array = cirkel();
+  unsigned int current_array_size;
+  BP* current_array;
+
 
 	while (1) {
 
-		unsigned int i = 0;
-		for (i = 0; i < 4; i++) {
-			draw_BP(vierkant_array[i]);
-		}
+
+    BP* bp0 = create_BP(5, 4, 10, 4, 15, 4);
+  	BP* bp1 = create_BP(15, 4, 15, 9, 15, 14);
+  	BP* bp2 = create_BP(15, 14, 10, 14, 5, 14);
+  	BP* bp3 = create_BP(5, 14, 5, 9, 5, 4);
+  	BP* vierkant_array[4] = { bp0, bp1, bp2, bp3 };
+    unsigned int vierkant_array_size = 4;
+
+    BP* bp4 = create_BP(8, 12, 8, 7, 13, 7);
+  	BP* bp5 = create_BP(13, 7, 18, 7, 18, 12);
+  	BP* bp6 = create_BP(18, 12, 18, 17, 13, 17);
+  	BP* bp7 = create_BP(13, 17, 8, 17, 8, 12);
+  	BP* cirkel_array[4] = { bp4, bp5, bp6, bp7 };
+    unsigned int cirkel_array_size = 4;
+
+    BP* bp8 = create_BP(4, 12, 10, 12, 16, 12);
+
+
+    current_array = cirkel_array;
+    current_array_size = cirkel_array_size;
+
+    draw_figure(current_array_size, current_array);
+
+
 	}
 
   return 0;
@@ -209,7 +239,7 @@ int main(void) {
 //Interupt als de zuid-knop wordt ingedrukt
 
 ISR(INT4_vect) {
-  
+
 }
 
 
