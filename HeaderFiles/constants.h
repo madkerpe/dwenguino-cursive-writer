@@ -20,7 +20,7 @@
 
 #define PI 3.14159265359
 
-#define TABLE_COS_X 180
+#define TABLE_COS_X 90
 #define TABLE_COS_Y 10
 #define TABLE_TAN_X 90
 #define TABLE_TAN_Y 10
