@@ -28,6 +28,8 @@
 #define START_POSITION_X 4
 #define START_POSITION_Y 10
 
+#define NORM_BUFFER 20
+
 #define SCALE 4
 
 

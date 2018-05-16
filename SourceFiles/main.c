@@ -24,7 +24,7 @@ float angle_pair[2];
 
 volatile float global_rico = 0;
 volatile float global_offset = 0;
-volatile char ingelezen_byte = 0;
+
 
 void setup_globals() {
   //A prioiri berekening van enkele waarden die vaak hergebruikt worden bij het berekenen van thresholds
