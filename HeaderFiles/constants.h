@@ -16,7 +16,7 @@
 #define LAAG_LENGTE 0.014 //s
 #define WACHT_LENGTE 2 //s
 
-#define BP_SAMPLE_SIZE 20
+#define BP_SAMPLE_SIZE 40
 
 #define BAUD_RATE 103
 
@@ -25,10 +25,10 @@
 #define SERVO_1_OFFSET 5
 #define SERVO_2_OFFSET 5
 
-#define START_POSITION_X 10
-#define START_POSITION_Y 8
+#define START_POSITION_X 4
+#define START_POSITION_Y 10
 
-#define SCALE 6
+#define SCALE 4
 
 
 #endif
