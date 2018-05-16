@@ -4,14 +4,16 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "HeaderFiles/constants.h"
-#include "HeaderFiles/functions.h"
-#include "HeaderFiles/figure.h"
-
 //We voegen enkele lib's toe om het LCD aan te sturen en om interrupts te gebruiken
 #include "HeaderFiles/dwenguinoBoard.h"
-#include "HeaderFiles/dwenguinoLCD.h"
 #include "avr/interrupt.h"
+
+#include "HeaderFiles/setup.h"
+#include "HeaderFiles/uart.h"
+#include "HeaderFiles/constants.h"
+#include "HeaderFiles/math_functions.h"
+#include "HeaderFiles/figure.h"
+
 
 volatile unsigned int toestand = SERVO_1;
 volatile unsigned int threshold_servo_1 = 0;
@@ -24,104 +26,11 @@ volatile float global_rico = 0;
 volatile float global_offset = 0;
 volatile char ingelezen_byte = 0;
 
-void setup_LCD () {
-  //Instellingen voor LCD
-  initBoard();
-  initLCD();
-  backlightOn();
-}
-
 void setup_globals() {
   //A prioiri berekening van enkele waarden die vaak hergebruikt worden bij het berekenen van thresholds
 	global_rico = FK * (RL - LL) / (PS * 180);
 	global_offset = FK * LL / PS;
 	threshold_laag = ((FK / PS) * LAAG_LENGTE);
-}
-
-void setup_interrupts() {
-  //INT4 pin configureren met falling edge
-  //Datasheet p.92 - 12.0.1
-  EICRB |= _BV(ISC41);
-  EICRB &= ~_BV(ISC40);
-
-  //Voor een of andere reden moet deze enabled worden
-  EIMSK |= _BV(PIN4);
-
-  //Bit om interrupts globaal toe te laten
-  //Specifiek Bit 7 - I
-  //Datasheet p.13
-  SREG |= _BV(7);
-
-  //INT4 pin van de MC als invoer en pull-up weerstand activeren
-  DDRE |= _BV(PE4);
-  PORTE |= _BV(PE4);
-
-  PORTC |= _BV(PC0);
-  DDRC &= ~_BV(PC0);
-
-  PORTC |= _BV(PC1);
-  DDRC &= ~_BV(PC1);
-}
-
-void setup_timer_interrupts() {
-  //Opnieuw moeten globale interrupts enabled worden
-  //Maar dat hebben we al gedaan
-
-  //Instellen wanneer de timer een interrupt genereert
-  //Output Compare A Match Interrupt = interrupt als het getal,
-  //in register OCR1A
-  //Datasheet p.143 - 15.10.17
-  TIMSK1 |= _BV(OCIE1A);
-  //HIER ZETTEN WE HET AAN!
-
-
-  //TCCR1A en TCCR1B om timer in modus;
-  //CTC = Clear Timer Compare match = OCR1A leeg gemaakt bij compare match
-  //Datasheet p.138 - tabel 15.4
-  TCCR1B &= ~_BV(WGM13);
-  TCCR1B |= _BV(WGM12);
-  TCCR1A &= ~_BV(WGM11);
-  TCCR1A &= ~_BV(WGM10);
-
-  //Stelt de prescaler in;
-  //om de hoeveel klokcycli de timer-register verhoogd moet worden
-  //Hier specifiek 256 kolokcycli ---> 16000*4 per seconde
-  //Datasheet p.140 - tabel 15.5
-  TCCR1B &= ~_BV(CS12);
-  TCCR1B |= _BV(CS11);
-  TCCR1B &= ~_BV(CS10);
-
-  //Output Compare A Match Interrupt; treshold
-  //Hier specifiek 40000,
-  //Dan interrupt om de 40/64 seconden
-  OCR1A = ((FK / PS) * WACHT_LENGTE);
-
-  //We zorgen dat we beginnen in LAAGe toestand
-  PINC &= ~_BV(PC0);
-  PINC &= ~_BV(PC1);
-
-}
-
-void setup_UART() {
-  //setting the BAUD rate
-  UBRR1H = (unsigned char)(BAUD_RATE>>8);
-  UBRR1L = (unsigned char)BAUD_RATE;
-
-	//Asynchronous or Synchronous mode for USART protocol
-	//Synchronous (UMSEL11=1) of asynchronous (UMSEL11=0)
-	//Datasheet p.178 - 19.2
-	UCSR1C &= ~_BV(UMSEL11);
-
-	//Double or single speed (asynchronous mode only)
-	//Hier hopelijk op single speed?
-	//Datasheet p.178 - 19.2
-	UCSR1A &= ~_BV(U2X1);
-
-  //enable reciever
-  UCSR1B = (1<<RXEN1)|(1<<TXEN1);
-
-  //set frame format: 8 data-bits, 2 stop-bits
-  UCSR1C = (1<<USBS1)|(3<<UCSZ10);
 }
 
 void determine_threshold(float angle, unsigned int* threshold) {
@@ -173,25 +82,6 @@ void draw_figure(unsigned int array_size, BP* array[]) {
     draw_BP(array[i]);
   }
 
-}
-
-char recieve_UART() {
-  //wait for data to be recieved by checking the flags
-  while(!(UCSR1A & (1<<RXC1))) {
-    ;
-  }
-
-  //Get and return recieved data from buffer
-  return UDR1;
-}
-
-void transmit_UART(unsigned int data) {
-  //wait for transmit buffer to be empty
-	while (!(UCSR1A & (1<<UDRE1))) {
-	}
-
-	UDR1 = data;
-	printIntToLCD(99, 1, 1);
 }
 
 int main(void) {
@@ -699,12 +589,11 @@ int main(void) {
         free(bp4);
         break;
 
+
       }
 
       //hacky function to get to a value from another namespace
       set_x_offset(0.5*SCALE);
-
-
 
     }
 
@@ -713,8 +602,10 @@ int main(void) {
 
 
 //Interupt als de zuid-knop wordt ingedrukt
-
+//function only used for debugging
 ISR(INT4_vect) {
+
+
 
 }
 
