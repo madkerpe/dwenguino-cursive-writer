@@ -5,16 +5,15 @@
 #define SERVO_1 1
 #define SERVO_2 2
 
-#define LL 0.000575 //s
-#define RL 0.00246 //s
+#define LL 0.000575 //in s
+#define RL 0.00246 //in s
 #define FK 16000000 //ticks per s
-#define PS 8 //dimentieloos
+#define PS 8 //prescaler
 #define ARMLENGTE_1 14 //cm
 #define ARMLENGTE_2 14 //cm
-//Alles in centimeter en seconden, wordt later aangepast...
 
-#define LAAG_LENGTE 0.014 //s
-#define WACHT_LENGTE 2 //s
+#define LAAG_LENGTE 0.014 //in s
+#define WACHT_LENGTE 2 //in s
 
 #define BP_SAMPLE_SIZE 40
 

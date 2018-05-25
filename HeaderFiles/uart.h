@@ -6,6 +6,5 @@
 
 void setup_UART();
 char recieve_UART();
-//void transmit_UART(unsigned int data)
 
 #endif

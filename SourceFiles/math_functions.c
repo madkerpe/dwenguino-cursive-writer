@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #include "../HeaderFiles/math_functions.h"
 #include "../HeaderFiles/constants.h"
 #include "math.h"
@@ -11,10 +13,9 @@ float my_atan(float x) {
 }
 
 float norm(float x, float y) {
-	//return (float)sqrt(x*x + y * y);
-
+	//Babylonian method to approximate the square root
 	float row[NORM_BUFFER];
-	row[0] = 1000;
+	row[0] = 1000; //random number, higher than the square root
 	float getal = x * x + y * y;
 
 	for (int i = 0; i < NORM_BUFFER - 1; i++) {

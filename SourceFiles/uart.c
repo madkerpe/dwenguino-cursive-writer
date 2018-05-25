@@ -7,12 +7,11 @@ void setup_UART() {
   UBRR1L = (unsigned char)BAUD_RATE;
 
 	//Asynchronous or Synchronous mode for USART protocol
-	//Synchronous (UMSEL11=1) of asynchronous (UMSEL11=0)
+	//Synchronous (UMSEL11=1) or asynchronous (UMSEL11=0)
 	//Datasheet p.178 - 19.2
 	UCSR1C &= ~_BV(UMSEL11);
 
 	//Double or single speed (asynchronous mode only)
-	//Hier hopelijk op single speed?
 	//Datasheet p.178 - 19.2
 	UCSR1A &= ~_BV(U2X1);
 
@@ -32,12 +31,4 @@ char recieve_UART() {
   return UDR1;
 }
 
-/*
-void transmit_UART(unsigned int data) {
-  //wait for transmit buffer to be empty
-	while (!(UCSR1A & (1<<UDRE1))) {
-	}
 
-	UDR1 = data;
-}
-*/

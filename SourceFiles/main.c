@@ -4,7 +4,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-//We voegen enkele lib's toe om het LCD aan te sturen en om interrupts te gebruiken
 #include "HeaderFiles/dwenguinoBoard.h"
 #include "avr/interrupt.h"
 
@@ -27,7 +26,7 @@ volatile float global_offset = 0;
 
 
 void setup_globals() {
-  //A prioiri berekening van enkele waarden die vaak hergebruikt worden bij het berekenen van thresholds
+	//calculation of some commomly used values
 	global_rico = FK * (RL - LL) / (PS * 180);
 	global_offset = FK * LL / PS;
 	threshold_laag = ((FK / PS) * LAAG_LENGTE);
@@ -89,7 +88,7 @@ int main(void) {
   setup_interrupts();
   setup_timer_interrupts();
   setup_LCD();
-  setup_globals();
+  setup_globals(); 
   setup_UART();
 
   float startpos[2];
@@ -592,7 +591,6 @@ int main(void) {
 
       }
 
-      //hacky function to get to a value from another namespace
       set_x_offset(0.5*SCALE);
 
     }
@@ -601,7 +599,7 @@ int main(void) {
 }
 
 
-//Interupt als de zuid-knop wordt ingedrukt
+//Interupt if the south-button is pressed
 //function only used for debugging
 ISR(INT4_vect) {
 
@@ -610,32 +608,32 @@ ISR(INT4_vect) {
 }
 
 
-//Interupt als de timer een bepaalde waarde overschrijdt
+//Interupt if the timer exceeds a certain value
 ISR(TIMER1_COMPA_vect) {
 
   switch (toestand) {
 
-    case LAAG: //we komen van LAAG en gaan naar SERVO_1
+    case LAAG: //we're coming from LAAG and going to SERVO_1
       toestand = SERVO_1;
       OCR1A = threshold_servo_1;
-      PORTC |= _BV(PC0); //servo 1 gaat hoog //PORT(schrijven), NIET PIN(lezen)
-      PORTC &= ~_BV(PC1); //servo 2 gaat laag
+      PORTC |= _BV(PC0); //servo 1 goes high 
+      PORTC &= ~_BV(PC1); //servo 2 goes low
 
       break;
 
-    case SERVO_1: //we komen van SERVO_1 en gaan naar SERVO_2
+    case SERVO_1: //we're coming from SERVO_1 and going to SERVO_2
       toestand = SERVO_2;
       OCR1A = threshold_servo_2;
-      PORTC &= ~_BV(PC0); //servo 1 gaat laag
-      PORTC |= _BV(PC1); //servo 2 gaat hoog
+      PORTC &= ~_BV(PC0); //servo 1 goes low
+      PORTC |= _BV(PC1); //servo 2 goes high
 
       break;
 
-    case SERVO_2: //we komen van SERVO_2 en gaan naar LAAG
+    case SERVO_2: //we're coming from SERVO_2 and going to LAAG
       toestand = LAAG;
       OCR1A = threshold_laag;
-      PORTC &= ~_BV(PC0); //servo 1 gaat laag (is normaal gezien overbodig)
-      PORTC &= ~_BV(PC1); //servo 2 gaat laag
+      PORTC &= ~_BV(PC0); //servo 1 goes low 
+      PORTC &= ~_BV(PC1); //servo 2 goes low
       break;
 
   }
