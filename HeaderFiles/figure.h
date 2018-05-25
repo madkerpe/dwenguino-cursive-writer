@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #ifndef DEF_FIGURE
 #define DEF_FIGURE
 

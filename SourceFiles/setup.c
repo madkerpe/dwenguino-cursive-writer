@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #include "../HeaderFiles/setup.h"
 
 void setup_LCD () {

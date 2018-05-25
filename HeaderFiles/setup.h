@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #ifndef DEF_SETUP
 #define DEF_SETUP
 

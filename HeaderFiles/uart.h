@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #ifndef DEF_USART
 #define DEF_USART
 

@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #include <math.h>
 #include <stdlib.h>
 

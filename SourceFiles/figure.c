@@ -1,3 +1,5 @@
+/*MARIJN DE KERPEL - ELIEN LEDEGEN*/
+
 #include "../HeaderFiles/figure.h"
 #include "../HeaderFiles/constants.h"
 #include <stdlib.h>
