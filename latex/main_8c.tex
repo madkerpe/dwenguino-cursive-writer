@@ -1,0 +1,145 @@
+\hypertarget{main_8c}{}\section{main.\+c File Reference}
+\label{main_8c}\index{main.\+c@{main.\+c}}
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include $<$util/delay.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/dwenguino\+Board.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}avr/interrupt.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/setup.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/uart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/constants.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/math\+\_\+functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header\+Files/figure.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8c_a830c49ea7e06402be83df040c84d54b9}{setup\+\_\+globals}} ()
+\item 
+void \mbox{\hyperlink{main_8c_a56838f35bdd90786cc8aedbc738c306b}{determine\+\_\+threshold}} (float angle, unsigned int $\ast$threshold)
+\item 
+void \mbox{\hyperlink{main_8c_a1e1219b37361ee91f632e059b07978f4}{inverse\+\_\+kinematics}} (float x, float y, float $\ast$\mbox{\hyperlink{main_8c_a111e7cc302cd470060fc449e8d5f3959}{angle\+\_\+pair}})
+\item 
+void \mbox{\hyperlink{main_8c_a4e73daa3b7d2168b080f97359430cece}{draw\+\_\+\+BP}} (BP $\ast$current\+\_\+\+BP)
+\item 
+void \mbox{\hyperlink{main_8c_a81b02a887c2c4d00d391493af5192125}{draw\+\_\+figure}} (unsigned int array\+\_\+size, BP $\ast$array\mbox{[}$\,$\mbox{]})
+\item 
+int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\item 
+\mbox{\hyperlink{main_8c_a98a290ada01eb27fd2ff4564371566e5}{I\+SR}} (I\+N\+T4\+\_\+vect)
+\item 
+\mbox{\hyperlink{main_8c_ad39420cdd896dd12c68e36313139d0a5}{I\+SR}} (T\+I\+M\+E\+R1\+\_\+\+C\+O\+M\+P\+A\+\_\+vect)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile unsigned int \mbox{\hyperlink{main_8c_a4f09cc0f062a4ae01bfa79e1a592ab29}{toestand}} = S\+E\+R\+V\+O\+\_\+1
+\item 
+volatile unsigned int \mbox{\hyperlink{main_8c_a826186f258219d0afedc15414ed748c1}{threshold\+\_\+servo\+\_\+1}} = 0
+\item 
+volatile unsigned int \mbox{\hyperlink{main_8c_ae36e8f6feef76a0df086f6de8831a657}{threshold\+\_\+servo\+\_\+2}} = 0
+\item 
+volatile unsigned int \mbox{\hyperlink{main_8c_a2d1dc7b4f1a5dcf72e56c3c5c4291d3d}{threshold\+\_\+laag}} = 0
+\item 
+float \mbox{\hyperlink{main_8c_a111e7cc302cd470060fc449e8d5f3959}{angle\+\_\+pair}} \mbox{[}2\mbox{]}
+\item 
+volatile float \mbox{\hyperlink{main_8c_aeee4e0a100ce9fc128b69ef95caa9730}{global\+\_\+rico}} = 0
+\item 
+volatile float \mbox{\hyperlink{main_8c_a7e744f91d6a3256caeddf3719f8e9c35}{global\+\_\+offset}} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a56838f35bdd90786cc8aedbc738c306b}\label{main_8c_a56838f35bdd90786cc8aedbc738c306b}} 
+\index{main.\+c@{main.\+c}!determine\+\_\+threshold@{determine\+\_\+threshold}}
+\index{determine\+\_\+threshold@{determine\+\_\+threshold}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{determine\+\_\+threshold()}{determine\_threshold()}}
+{\footnotesize\ttfamily void determine\+\_\+threshold (\begin{DoxyParamCaption}\item[{float}]{angle,  }\item[{unsigned int $\ast$}]{threshold }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a4e73daa3b7d2168b080f97359430cece}\label{main_8c_a4e73daa3b7d2168b080f97359430cece}} 
+\index{main.\+c@{main.\+c}!draw\+\_\+\+BP@{draw\+\_\+\+BP}}
+\index{draw\+\_\+\+BP@{draw\+\_\+\+BP}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{draw\+\_\+\+B\+P()}{draw\_BP()}}
+{\footnotesize\ttfamily void draw\+\_\+\+BP (\begin{DoxyParamCaption}\item[{BP $\ast$}]{current\+\_\+\+BP }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a81b02a887c2c4d00d391493af5192125}\label{main_8c_a81b02a887c2c4d00d391493af5192125}} 
+\index{main.\+c@{main.\+c}!draw\+\_\+figure@{draw\+\_\+figure}}
+\index{draw\+\_\+figure@{draw\+\_\+figure}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{draw\+\_\+figure()}{draw\_figure()}}
+{\footnotesize\ttfamily void draw\+\_\+figure (\begin{DoxyParamCaption}\item[{unsigned int}]{array\+\_\+size,  }\item[{BP $\ast$}]{array\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a1e1219b37361ee91f632e059b07978f4}\label{main_8c_a1e1219b37361ee91f632e059b07978f4}} 
+\index{main.\+c@{main.\+c}!inverse\+\_\+kinematics@{inverse\+\_\+kinematics}}
+\index{inverse\+\_\+kinematics@{inverse\+\_\+kinematics}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{inverse\+\_\+kinematics()}{inverse\_kinematics()}}
+{\footnotesize\ttfamily void inverse\+\_\+kinematics (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float $\ast$}]{angle\+\_\+pair }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a98a290ada01eb27fd2ff4564371566e5}\label{main_8c_a98a290ada01eb27fd2ff4564371566e5}} 
+\index{main.\+c@{main.\+c}!I\+SR@{I\+SR}}
+\index{I\+SR@{I\+SR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{I\+S\+R()}{ISR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily I\+SR (\begin{DoxyParamCaption}\item[{I\+N\+T4\+\_\+vect}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_ad39420cdd896dd12c68e36313139d0a5}\label{main_8c_ad39420cdd896dd12c68e36313139d0a5}} 
+\index{main.\+c@{main.\+c}!I\+SR@{I\+SR}}
+\index{I\+SR@{I\+SR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{I\+S\+R()}{ISR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily I\+SR (\begin{DoxyParamCaption}\item[{T\+I\+M\+E\+R1\+\_\+\+C\+O\+M\+P\+A\+\_\+vect}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{main_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{main.\+c@{main.\+c}!main@{main}}
+\index{main@{main}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{main_8c_a830c49ea7e06402be83df040c84d54b9}\label{main_8c_a830c49ea7e06402be83df040c84d54b9}} 
+\index{main.\+c@{main.\+c}!setup\+\_\+globals@{setup\+\_\+globals}}
+\index{setup\+\_\+globals@{setup\+\_\+globals}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{setup\+\_\+globals()}{setup\_globals()}}
+{\footnotesize\ttfamily void setup\+\_\+globals (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_a111e7cc302cd470060fc449e8d5f3959}\label{main_8c_a111e7cc302cd470060fc449e8d5f3959}} 
+\index{main.\+c@{main.\+c}!angle\+\_\+pair@{angle\+\_\+pair}}
+\index{angle\+\_\+pair@{angle\+\_\+pair}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{angle\+\_\+pair}{angle\_pair}}
+{\footnotesize\ttfamily float angle\+\_\+pair\mbox{[}2\mbox{]}}
+
+\mbox{\Hypertarget{main_8c_a7e744f91d6a3256caeddf3719f8e9c35}\label{main_8c_a7e744f91d6a3256caeddf3719f8e9c35}} 
+\index{main.\+c@{main.\+c}!global\+\_\+offset@{global\+\_\+offset}}
+\index{global\+\_\+offset@{global\+\_\+offset}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{global\+\_\+offset}{global\_offset}}
+{\footnotesize\ttfamily volatile float global\+\_\+offset = 0}
+
+\mbox{\Hypertarget{main_8c_aeee4e0a100ce9fc128b69ef95caa9730}\label{main_8c_aeee4e0a100ce9fc128b69ef95caa9730}} 
+\index{main.\+c@{main.\+c}!global\+\_\+rico@{global\+\_\+rico}}
+\index{global\+\_\+rico@{global\+\_\+rico}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{global\+\_\+rico}{global\_rico}}
+{\footnotesize\ttfamily volatile float global\+\_\+rico = 0}
+
+\mbox{\Hypertarget{main_8c_a2d1dc7b4f1a5dcf72e56c3c5c4291d3d}\label{main_8c_a2d1dc7b4f1a5dcf72e56c3c5c4291d3d}} 
+\index{main.\+c@{main.\+c}!threshold\+\_\+laag@{threshold\+\_\+laag}}
+\index{threshold\+\_\+laag@{threshold\+\_\+laag}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{threshold\+\_\+laag}{threshold\_laag}}
+{\footnotesize\ttfamily volatile unsigned int threshold\+\_\+laag = 0}
+
+\mbox{\Hypertarget{main_8c_a826186f258219d0afedc15414ed748c1}\label{main_8c_a826186f258219d0afedc15414ed748c1}} 
+\index{main.\+c@{main.\+c}!threshold\+\_\+servo\+\_\+1@{threshold\+\_\+servo\+\_\+1}}
+\index{threshold\+\_\+servo\+\_\+1@{threshold\+\_\+servo\+\_\+1}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{threshold\+\_\+servo\+\_\+1}{threshold\_servo\_1}}
+{\footnotesize\ttfamily volatile unsigned int threshold\+\_\+servo\+\_\+1 = 0}
+
+\mbox{\Hypertarget{main_8c_ae36e8f6feef76a0df086f6de8831a657}\label{main_8c_ae36e8f6feef76a0df086f6de8831a657}} 
+\index{main.\+c@{main.\+c}!threshold\+\_\+servo\+\_\+2@{threshold\+\_\+servo\+\_\+2}}
+\index{threshold\+\_\+servo\+\_\+2@{threshold\+\_\+servo\+\_\+2}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{threshold\+\_\+servo\+\_\+2}{threshold\_servo\_2}}
+{\footnotesize\ttfamily volatile unsigned int threshold\+\_\+servo\+\_\+2 = 0}
+
+\mbox{\Hypertarget{main_8c_a4f09cc0f062a4ae01bfa79e1a592ab29}\label{main_8c_a4f09cc0f062a4ae01bfa79e1a592ab29}} 
+\index{main.\+c@{main.\+c}!toestand@{toestand}}
+\index{toestand@{toestand}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{toestand}{toestand}}
+{\footnotesize\ttfamily volatile unsigned int toestand = S\+E\+R\+V\+O\+\_\+1}
+
